@@ -19,7 +19,7 @@ public class Launcher {
             }
         }
 
-    public void startServer(int port) throws IOException {
+    public HttpServer startServer(int port) throws IOException {
         HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
         ExecutorService executor = Executors.newFixedThreadPool(1);
         server.createContext("/ping", new PingHandler());
@@ -27,6 +27,8 @@ public class Launcher {
         //server.createContext("/api/game/fire", new FireHandler(game));
         server.setExecutor(executor);
         server.start();
+
+        return server;
     }
 }
 

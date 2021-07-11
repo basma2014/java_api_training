@@ -14,12 +14,15 @@ public class StartHandler implements HttpHandler {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         if (exchange.getRequestMethod().equals("POST")) {
-            String request = streamToString(exchange.getRequestBody());
-            JsonNode node = new ObjectMapper().readTree(request);
-            String url = node.get("url").asText();
-            String body = "{\"id\": \"2\", \"url\": \"" + url + "\", \"message\": \"May the best code win\"}";
-            Response(body,exchange);
-
+            try {
+                String request = streamToString(exchange.getRequestBody());
+                JsonNode node = new ObjectMapper().readTree(request);
+                String url = node.get("url").asText();
+                String body = "{\"id\": \"2\", \"url\": \"" + url + "\", \"message\": \"May the best code win\"}";
+                Response(body, exchange);
+            } catch (Exception e) {
+                BadRequest(exchange);
+            }
         }else {
             NotFound(exchange);
         }
